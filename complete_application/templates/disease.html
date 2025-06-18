@@ -1,0 +1,91 @@
+{% extends 'layout.html' %}
+{% block title %}Medicine Detection - Medical Prescription Analyzer{% endblock %}
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h2 class="section-title text-center mb-4">
+                        <i class="fas fa-pills me-2"></i>
+                        Medicine Detection
+                    </h2>
+                    <p class="text-center text-muted mb-4">
+                        Upload a clear image of your medical prescription to detect and analyze the medicines
+                    </p>
+
+                    <form method="POST" action="{{ url_for('disease_prediction') }}" enctype="multipart/form-data">
+                        <div class="mb-4">
+                            <label for="file" class="form-label">
+                                <i class="fas fa-file-image me-2"></i>Select Prescription Image
+                            </label>
+                            <input type="file" class="form-control" id="file" name="file" accept="image/*" required onchange="preview_image(event)">
+                            <div class="form-text">
+                                Supported formats: JPG, PNG, JPEG. Maximum file size: 5MB
+                            </div>
+                        </div>
+
+                        <div class="mb-3 text-center">
+                            <img id="output-image" class="img-fluid rounded" style="max-height: 200px;" />
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-search me-2"></i>Analyze Prescription
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+        background-color: white;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e0e0e0;
+    }
+
+    .form-control:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    .btn-primary {
+        background-color: var(--secondary-color);
+        border: none;
+        padding: 0.8rem 1.5rem;
+        font-weight: 500;
+    }
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+    }
+
+    .form-text {
+        color: #6c757d;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+</style>
+
+<script type="text/javascript">
+    function preview_image(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('output-image');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+{% endblock %}
